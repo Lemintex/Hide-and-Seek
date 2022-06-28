@@ -12,7 +12,7 @@ public class Guard : MonoBehaviour
     Vector3[] waypoints;
 
     public Light spotlight;
-    public float viewDistance;
+    public float viewDistance = 12;
     float viewAngle;
 
     Transform playerTransform;
@@ -46,7 +46,7 @@ public class Guard : MonoBehaviour
 
     bool CanSeePlayer()
     {
-        if(Vector3.Distance(transform.position, playerTransform.position) < viewDistance)
+        if(Vector3.Distance(transform.position, playerTransform.position) > viewDistance)
         {
             return false;
         }
@@ -57,9 +57,7 @@ public class Guard : MonoBehaviour
         {
             return false;
         }
-        Ray ray = new Ray(transform.position, playerTransform.position);
 
-        RaycastHit hitInfo;
         if(Physics.Linecast(transform.position, playerTransform.position, viewMask))
         {
             return false;
@@ -109,5 +107,7 @@ public class Guard : MonoBehaviour
             previousPos = waypoint.position;
         }
         Gizmos.DrawLine(previousPos, startPos);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, transform.forward * viewDistance);
     }
 }
